@@ -3624,17 +3624,851 @@
 
             <!-- Page NO 36 -->
 
+            <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        .form-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #000;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .checkbox-group {
+            display: flex;
+            gap: 15px;
+        }
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+        }
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+        .section-title {
+            font-weight: bold;
+            margin: 20px 0 10px 0;
+            padding: 5px;
+            background-color: #e6e6e6;
+            text-align: center;
+        }
+    </style>
+             
+            <!-- Technical Maturity Section -->
+            
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+    <thead>
+        <tr>
+            <th style="width: 8%; border: 1px solid #000; padding: 8px; text-align: center; background-color: #f2f2f2;">S.No.</th>
+            <th style="width: 44%; border: 1px solid #000; padding: 8px; text-align: left; background-color: #f2f2f2;">Competency Basis</th>
+            <th style="width: 24%; border: 1px solid #000; padding: 8px; text-align: left; background-color: #f2f2f2;">Score Basis</th>
+            <th style="width: 11%; border: 1px solid #000; padding: 8px; text-align: center; background-color: #f2f2f2;">Max Scores</th>
+            <th style="width: 13%; border: 1px solid #000; padding: 8px; text-align: center; background-color: #f2f2f2;">Scores Obtained</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="border: 1px solid #000; padding: 8px; text-align: center;">i.</td>
+            <td style="border: 1px solid #000; padding: 8px;">Does the firm have a Quality Review of all Listed audit engagements as per para 60 of SQC1? Is there a document of time spent for review of all engagements?</td>
+            <td style="border: 1px solid #000; padding: 8px;">
+                <p style="margin: 5px 0;">For Yes – 8 Points</p>
+                <p style="margin: 5px 0;">For No – 0 Point</p>
+            </td>
+            <td style="border: 1px solid #000; padding: 8px; text-align: center;">8</td>
+            <td style="border: 1px solid #000; padding: 8px; text-align: center;">
+                <div style="display: flex; justify-content: space-around;">
+                    <label><input type="radio" name="quality_review" value="8" required> Yes</label>
+                    <label><input type="radio" name="quality_review" value="0"> No</label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #000; padding: 8px; text-align: center;">ii.</td>
+            <td style="border: 1px solid #000; padding: 8px;">Total engagements having concluded to be satisfactory as per quality review vs No of engagements quality reviewed</td>
+            <td style="border: 1px solid #000; padding: 8px;">
+                <p style="margin: 5px 0;">Up to 10% – 0 Point</p>
+                <p style="margin: 5px 0;">More than 10% and up to 30% – 4 Points</p>
+                <p style="margin: 5px 0;">More than 30% and up to 50% – 8 Points</p>
+                <p style="margin: 5px 0;">More than 50% and up to 70% – 12 Points</p>
+                <p style="margin: 5px 0;">More than 70% and up to 90% – 16 Points</p>
+                <p style="margin: 5px 0;">More than 90% – 20 Points</p>
+            </td>
+            <td style="border: 1px solid #000; padding: 8px; text-align: center;">20</td>
+            <td style="border: 1px solid #000; padding: 8px; text-align: center;">
+                <select name="satisfactory_engagements" style="width: 100%;" required>
+                    <option value="">Select</option>
+                    <option value="0">Up to 10% (0 Points)</option>
+                    <option value="4">10-30% (4 Points)</option>
+                    <option value="8">30-50% (8 Points)</option>
+                    <option value="12">50-70% (12 Points)</option>
+                    <option value="16">70-90% (16 Points)</option>
+                    <option value="20">More than 90% (20 Points)</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #000; padding: 8px; text-align: center;">iii.</td>
+            <td style="border: 1px solid #000; padding: 8px;">No. of engagements without findings by ICAI, Committees of ICAI and regulators that require significant improvements</td>
+            <td style="border: 1px solid #000; padding: 8px;">
+                <p style="margin: 5px 0;">10% to 30% – 4 Points</p>
+                <p style="margin: 5px 0;">More than 30% and up to 50% – 8 Points</p>
+                <p style="margin: 5px 0;">More than 50% and up to 70% – 12 Points</p>
+                <p style="margin: 5px 0;">More than 70% and up to 90% – 16 Points</p>
+                <p style="margin: 5px 0;">More than 90% – 20 Points</p>
+            </td>
+            <td style="border: 1px solid #000; padding: 8px; text-align: center;">20</td>
+            <td style="border: 1px solid #000; padding: 8px; text-align: center;">
+                <select name="engagements_without_findings" style="width: 100%;" required>
+                    <option value="">Select</option>
+                    <option value="4">10-30% (4 Points)</option>
+                    <option value="8">30-50% (8 Points)</option>
+                    <option value="12">50-70% (12 Points)</option>
+                    <option value="16">70-90% (16 Points)</option>
+                    <option value="20">More than 90% (20 Points)</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #000; padding: 8px;"></td>
+            <td style="border: 1px solid #000; padding: 8px; font-weight: bold;">Total</td>
+            <td style="border: 1px solid #000; padding: 8px;"></td>
+            <td style="border: 1px solid #000; padding: 8px; text-align: center;">36</td>
+            <td style="border: 1px solid #000; padding: 8px; text-align: center;">
+                <input type="text" name="section1_5_total" readonly style="width: 100%; text-align: center;">
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<!-- Page No 37 -->
+
+        <table>
+                <thead>
+                    <tr>
+                        <th style="width: 8%;">S.No.</th>
+                        <th style="width: 44%;">Competency Basis</th>
+                        <th style="width: 24%;">Score Basis</th>
+                        <th style="width: 11%;">Max Scores</th>
+                        <th style="width: 13%;">Scores Obtained</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>iv.</td>
+                        <td>Documentation of the firm in accordance with SQC 1</td>
+                        <td>
+                            <p>For the presence of documentation in the critical areas of Ethical require-ments, Acceptance and continuance of client relation-ships and specific engagements, and Engage-ment performance – 6 Points</p>
+                            <p>For the presence of documentation in the areas of Leadership responsibilities for quality within the firm, Human resources, and Monitoring – 6 Points</p>
+                        </td>
+                        <td class="text-center">12</td>
+                        <td>
+                            <div class="checkbox-group">
+                                <label><input type="radio" name="capacity_planning" value="4" required> Yes</label>
+                                <label><input type="radio" name="capacity_planning" value="0"> No</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>v.</td>
+                        <td>Does the firm have Accounting and Auditing Resources in the form of soft copies of archives Q&As, firm thought leadership, a dedicated/ Shared Technical desk?</td>
+                        <td>
+                            <p>For Yes – 8 Points</p>
+                            <p>For No – 0 Point</p>
+                        </td>
+                        <td class="text-center">8</td>
+                        <td>
+                            <div class="checkbox-group">
+                                <label><input type="radio" name="budgeting_process" value="4" required> Yes</label>
+                                <label><input type="radio" name="budgeting_process" value="0"> No</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>vi.</td>
+                        <td>Is appropriate time spent on understanding the business, risk assessment and planning an engagement?Have risks been mitigated through performance of audit procedures?</td>
+                        <td>
+                            <p>For Yes – 12 Points</p>
+                            <p>For No – 0 Point</p>
+                        </td>
+                        <td class="text-center">12</td>
+                        <td>
+                            <select name="budget_analysis" required>
+                                <option value="">Select</option>
+                                <option value="0">For Yes – 12 Points</option>
+                                <option value="4">For No – 0 Point</option>
+                            </select>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td></td>
+                        <td><strong>Total</strong></td>
+                        <td></td>
+                        <td class="text-center">36</td>
+                        <td><input type="text" name="section1_4_total" readonly></td>
+                    </tr>
+                </tbody>
+        </table>
+
+            <!-- Page No 38 -->
+
+            <div><h2>1.6 Benchmarking of service delivery</h2></div>
+        <table>
+                <thead>
+                    <tr>
+                        <th style="width: 8%;">S.No.</th>
+                        <th style="width: 44%;">Competency Basis</th>
+                        <th style="width: 24%;">Score Basis</th>
+                        <th style="width: 11%;">Max Scores</th>
+                        <th style="width: 13%;">Scores Obtained</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>i.</td>
+                        <td>Does the firm follow/ implement Standard delivery methodology – the adoption of audit manuals, adherence to practice standards and tools?</td>
+                        <td>
+                            <p>For No - 0 Points</p>
+                        </td>
+                        <td class="text-center">12</td>
+                        <td>
+                            <div class="checkbox-group">
+                                <label><input type="radio" name="capacity_planning" value="4" required> Yes</label>
+                                <label><input type="radio" name="capacity_planning" value="0"> No</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ii.</td>
+                        <td>The number of statutory audit engagements re- worked (filing errors, information insufficiency, wrong interpretation of provisions, etc.)</td>
+                        <td>
+                            <p>Less than 5% - 0 Point</p>
+                            <p>More than 5% to 15% (-1) Point</p>
+                            <p>More than 15% to 30% to 50% (-3) Points</p>
+                            <p>More than 50% (-4) Points</p>
+                        </td>
+                        <td class="text-center">0</td>
+                        <td>
+                            <div class="checkbox-group">
+                                <label><input type="radio" name="budgeting_process" value="4" required> Yes</label>
+                                <label><input type="radio" name="budgeting_process" value="0"> No</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>iii.</td>
+                        <td>Number of client disputes (other than fees disputes) and how they are addressed.</td>
+                        <td>
+                            <p>Less than 5% – 0 Point</p>
+                            <p>More than 5% to 15%: (-1) Point</p>
+                            <p>More than 15% to 30%: (-2) Points</p>
+                            <p>More than 30% to 50%: (-3) Points</p>
+                            <p>More than 50%: (-4) Points </p>
+                        </td>
+                        <td class="text-center">12</td>
+                        <td>
+                            <option name="budget_analysis" required>
+                                <option value="">Select</option>
+                                <select value="0">Less than 5% – 0 Point</option>
+                                <option value="4">More than 5% to 15%: (-1) Point</option>
+                                <option value="4">More than 15% to 30%: (-2) Points</option>
+                                <option value="4">More than 30% to 50%: (-3) Points</option>
+                                <option value="4">More than 50%: (-4) Points</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>iv.</td>
+                        <td>Is the timing of audit interactions with management planned in such a way that integrates with the auditor’s requirements so that audit timelines can be met? [Review frequency of back-log, engagement agreed upon and not commenced, WIP, etc. (Excl. of client-side delays)]</td>
+                        <td>
+                            <p>For Yes – 12 Points</p>
+                            <p>For No – 0 Point</p>
+                            
+                        </td>
+                        <td class="text-center">12</td>
+                        <td>
+                            <select name="budget_analysis" required>
+                                <option value="">Select</option>
+                                <option value="0">For Yes – 12 Points</option>
+                                <option value="4">For No – 0 Point</option>
+                            </select>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td></td>
+                        <td><strong>Total</strong></td>
+                        <td></td>
+                        <td class="text-center">36</td>
+                        <td><input type="text" name="section1_4_total" readonly></td>
+                    </tr>
+                </tbody>
+        </table>
+
+        <!-- Page No 39 to 41 -->
+
+         <table>
+            <thead>
+                <tr>
+                    <th style="width: 9.0769%;">S.No.</th>
+                    <th style="width: 39.3228%;">Competency Basis</th>
+                    <th style="width: 20.5234%;">Score Basis</th>
+                    <th style="width: 19.4968%;">Max Scores</th>
+                    <th style="width: 13.734%;">Scores Obtained</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Client Sensitization Section -->
+                <tr class="section-title">
+                    <td style="width: 9.0769%;">
+                        <p><strong class="century-schoolbook">1.7</strong></p>
+                    </td>
+                    <td colspan="4" style="width: 90.7693%;">
+                        <p><strong class="century-schoolbook">Client Sensitisation</strong></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;">
+                        <p><span class="century-schoolbook">i.</span></p>
+                    </td>
+                    <td style="width: 39.3228%;">
+                        <p><span class="century-schoolbook">Awareness meetings and Knowledge dissemination meetings/articles/document sharing with clients including:</span></p>
+                        <p style="margin-left:18.3pt;text-indent:-18.3pt;"><span class="century-schoolbook">1) Updating client on audit issues, formally- effectiveness of the process of communication with management and those charged with Governance;</span></p>
+                        <p style="margin-left:18.3pt;text-indent:-18.3pt;"><span class="century-schoolbook">2) Updating client on changes in accounting, legal, audit aspects, etc. with client specific impact; and</span></p>
+                        <p><span class="century-schoolbook">3) Follow through on previous audit observations and updates to management and those charged with Governance.</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p><span class="century-schoolbook">For Yes - 8 Points</span></p>
+                        <p><span class="century-schoolbook">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><span class="century-schoolbook">8</span></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <div class="checkbox-group">
+                            <label><input type="radio" name="client_sensitization_i" value="yes" required> Yes</label>
+                            <label><input type="radio" name="client_sensitization_i" value="no"> No</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;">
+                        <p><span class="century-schoolbook">ii.</span></p>
+                    </td>
+                    <td style="width: 39.3228%;">
+                        <p><span class="century-schoolbook">Monitoring planned hours vs actual hours across engagement; the focus is on the existence of a monitoring mechanism</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p><span class="century-schoolbook">For Yes - 8 Points</span></p>
+                        <p><span class="century-schoolbook">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><span class="century-schoolbook">8</span></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <div class="checkbox-group">
+                            <label><input type="radio" name="client_sensitization_ii" value="yes" required> Yes</label>
+                            <label><input type="radio" name="client_sensitization_ii" value="no"> No</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;"></td>
+                    <td style="width: 39.3228%;">
+                        <p><strong class="century-schoolbook">Total</strong></p>
+                    </td>
+                    <td style="width: 20.5234%;"></td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><strong class="century-schoolbook">16</strong></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <input type="text" name="client_sensitization_total" readonly>
+                    </td>
+                </tr>
+
+                <!-- Technology Adoption Section -->
+                <tr class="section-title">
+                    <td style="width: 9.0769%;">
+                        <p><strong class="century-schoolbook">1.8</strong></p>
+                    </td>
+                    <td colspan="4" style="width: 90.7693%;">
+                        <p><strong class="century-schoolbook">Technology Adoption</strong></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;">
+                        <p><span class="calibri">(i)</span></p>
+                    </td>
+                    <td style="width: 39.3228%;">
+                        <p><span class="century-schoolbook">Technology adoption at</span></p>
+                    </td>
+                    <td style="width: 20.5234%;"></td>
+                    <td style="width: 19.4968%;" class="text-center"></td>
+                    <td style="width: 13.734%;"></td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;"></td>
+                    <td style="width: 39.3228%;">
+                        <p><span class="century-schoolbook">Office -</span></p>
+                    </td>
+                    <td style="width: 20.5234%;"></td>
+                    <td style="width: 19.4968%;" class="text-center"></td>
+                    <td style="width: 13.734%;"></td>
+                </tr>
+                <!-- Office Technology Items -->
+                <tr>
+                    <td style="width: 9.0769%;"></td>
+                    <td style="width: 39.3228%;">
+                        <p class="bullet-item"><span class="calibri">• Internal communication - chats</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p><span class="calibri">For Yes - 4 Points</span></p>
+                        <p><span class="calibri">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><span class="calibri">4</span></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <div class="checkbox-group">
+                            <label><input type="radio" name="tech_adoption_i_1" value="yes" required> Yes</label>
+                            <label><input type="radio" name="tech_adoption_i_1" value="no"> No</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;"></td>
+                    <td style="width: 39.3228%;">
+                        <p class="bullet-item"><span class="calibri">• Has the firm automated its office with automated Attendance System and Leave management?</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p><span class="calibri">For Yes - 4 Points</span></p>
+                        <p><span class="calibri">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><span class="calibri">4</span></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <div class="checkbox-group">
+                            <label><input type="radio" name="tech_adoption_i_2" value="yes" required> Yes</label>
+                            <label><input type="radio" name="tech_adoption_i_2" value="no"> No</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;"></td>
+                    <td style="width: 39.3228%;">
+                        <p class="bullet-item"><span class="calibri">• Project or activity management/ Timesheet management</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p><span class="calibri">For Yes - 4 Points</span></p>
+                        <p><span class="calibri">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><span class="calibri">4</span></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <div class="checkbox-group">
+                            <label><input type="radio" name="tech_adoption_i_3" value="yes" required> Yes</label>
+                            <label><input type="radio" name="tech_adoption_i_3" value="no"> No</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;"></td>
+                    <td style="width: 39.3228%;">
+                        <p class="bullet-item"><span class="calibri">• Digital storage of records (scan, etc.)</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p><span class="calibri">For Yes - 4 Points</span></p>
+                        <p><span class="calibri">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><span class="calibri">4</span></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <div class="checkbox-group">
+                            <label><input type="radio" name="tech_adoption_i_4" value="yes" required> Yes</label>
+                            <label><input type="radio" name="tech_adoption_i_4" value="no"> No</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;"></td>
+                    <td style="width: 39.3228%;">
+                        <p class="bullet-item"><span class="calibri">• Centralised server/ Cloud</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p><span class="calibri">For Yes - 4 Points</span></p>
+                        <p><span class="calibri">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><span class="calibri">4</span></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <div class="checkbox-group">
+                            <label><input type="radio" name="tech_adoption_i_5" value="yes" required> Yes</label>
+                            <label><input type="radio" name="tech_adoption_i_5" value="no"> No</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;"></td>
+                    <td style="width: 39.3228%;">
+                        <p class="bullet-item"><span class="calibri">• Digital Library (Own or ICAI)</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p><span class="calibri">For Yes - 4 Points</span></p>
+                        <p><span class="calibri">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><span class="calibri">4</span></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <div class="checkbox-group">
+                            <label><input type="radio" name="tech_adoption_i_6" value="yes" required> Yes</label>
+                            <label><input type="radio" name="tech_adoption_i_6" value="no"> No</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;"></td>
+                    <td style="width: 39.3228%;">
+                        <p class="bullet-item"><span class="calibri">• Client interaction (Alerts, updates, availability of information in website, etc.)</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p><span class="calibri">For Yes - 4 Points</span></p>
+                        <p><span class="calibri">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><span class="calibri">4</span></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <div class="checkbox-group">
+                            <label><input type="radio" name="tech_adoption_i_7" value="yes" required> Yes</label>
+                            <label><input type="radio" name="tech_adoption_i_7" value="no"> No</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;"></td>
+                    <td style="width: 39.3228%;">
+                        <p class="bullet-item"><span class="calibri">• Video conferencing facilities adopted</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p><span class="calibri">For Yes - 4 Points</span></p>
+                        <p><span class="calibri">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><span class="calibri">4</span></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <div class="checkbox-group">
+                            <label><input type="radio" name="tech_adoption_i_8" value="yes" required> Yes</label>
+                            <label><input type="radio" name="tech_adoption_i_8" value="no"> No</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;"></td>
+                    <td style="width: 39.3228%;">
+                        <p class="bullet-item"><span class="calibri">• Does the firm use only licensed operating system, software etc.?</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p><span class="calibri">For Yes - 4 Points</span></p>
+                        <p><span class="calibri">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><span class="calibri">4</span></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <div class="checkbox-group">
+                            <label><input type="radio" name="tech_adoption_i_9" value="yes" required> Yes</label>
+                            <label><input type="radio" name="tech_adoption_i_9" value="no"> No</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;"></td>
+                    <td style="width: 39.3228%;">
+                        <p class="bullet-item"><span class="calibri">• Own E-mail domains, E-mail usage policies, etc.</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p><span class="calibri">For Yes - 4 Points</span></p>
+                        <p><span class="calibri">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><span class="calibri">4</span></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <div class="checkbox-group">
+                            <label><input type="radio" name="tech_adoption_i_10" value="yes" required> Yes</label>
+                            <label><input type="radio" name="tech_adoption_i_10" value="no"> No</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;"></td>
+                    <td style="width: 39.3228%;">
+                        <p class="bullet-item"><span class="calibri">• Use of anti-virus and malware protection tools</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p><span class="calibri">For Yes - 4 Points</span></p>
+                        <p><span class="calibri">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><span class="calibri">4</span></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <div class="checkbox-group">
+                            <label><input type="radio" name="tech_adoption_i_11" value="yes" required> Yes</label>
+                            <label><input type="radio" name="tech_adoption_i_11" value="no"> No</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;"></td>
+                    <td style="width: 39.3228%;">
+                        <p class="bullet-item"><span class="calibri">• Data security, etc.</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p><span class="calibri">For Yes - 4 Points</span></p>
+                        <p><span class="calibri">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><span class="calibri">4</span></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <div class="checkbox-group">
+                            <label><input type="radio" name="tech_adoption_i_12" value="yes" required> Yes</label>
+                            <label><input type="radio" name="tech_adoption_i_12" value="no"> No</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;"></td>
+                    <td style="width: 39.3228%;">
+                        <p class="bullet-item"><span class="calibri">• Cyber security measures</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p><span class="calibri">For Yes - 4 Points</span></p>
+                        <p><span class="calibri">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><span class="calibri">4</span></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <div class="checkbox-group">
+                            <label><input type="radio" name="tech_adoption_i_13" value="yes" required> Yes</label>
+                            <label><input type="radio" name="tech_adoption_i_13" value="no"> No</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;">
+                        <p><span class="calibri">ii.</span></p>
+                    </td>
+                    <td style="width: 39.3228%;">
+                        <p><span class="calibri">Awareness and Adoption of Technology for Service delivery - Say, use of Audit tools, usage of analytical tools, use of data visualisation tools or adoption of an audit tool. Note: DCMM version 2 may be referred to arrive at the technical maturity of the firm/CA.</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p><span class="calibri">For Yes - 12 Points</span></p>
+                        <p><span class="calibri">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><span class="calibri">12</span></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <div class="checkbox-group">
+                            <label><input type="radio" name="tech_adoption_ii" value="yes" required> Yes</label>
+                            <label><input type="radio" name="tech_adoption_ii" value="no"> No</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;"></td>
+                    <td style="width: 39.3228%;">
+                        <p><strong class="calibri">Total</strong></p>
+                    </td>
+                    <td style="width: 20.5234%;"></td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><strong class="calibri">64</strong></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <input type="text" name="tech_adoption_total" readonly>
+                    </td>
+                </tr>
+
+                <!-- Revenue, Budgeting & Pricing Section -->
+                <tr class="section-title">
+                    <td style="width: 9.0769%;">
+                        <p><strong class="century-schoolbook">1.9</strong></p>
+                    </td>
+                    <td colspan="4" style="width: 90.7693%;">
+                        <p><strong class="century-schoolbook">Revenue, Budgeting & Pricing</strong></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;">
+                        <p><span class="calibri">i.</span></p>
+                    </td>
+                    <td style="width: 39.3228%;">
+                        <p><span class="calibri">Whether the client wise revenue is in compliance with the Code of Ethics (currently fees from one client should not exceed 40% of total revenue unless safeguards are put in place) and once the deferred clauses of Part A are implemented this will be reduced to 15%.</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p><span class="calibri">For Yes -4 Points</span></p>
+                        <p><span class="calibri">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><span class="calibri">4</span></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <div class="checkbox-group">
+                            <label><input type="radio" name="revenue_pricing_i" value="yes" required> Yes</label>
+                            <label><input type="radio" name="revenue_pricing_i" value="no"> No</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;">
+                        <p><span class="calibri">ii.</span></p>
+                    </td>
+                    <td style="width: 39.3228%;">
+                        <p><span class="calibri">Fee considerations and scope of services should not infringe upon the quality of work and documentation as envisaged in SQC 1 under Leadership is responsible for quality within the firm.</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p><span class="calibri">Yes - 8 Points</span></p>
+                        <p><span class="calibri">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><span class="calibri">8</span></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <div class="checkbox-group">
+                            <label><input type="radio" name="revenue_pricing_ii" value="yes" required> Yes</label>
+                            <label><input type="radio" name="revenue_pricing_ii" value="no"> No</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;">
+                        <p><span class="calibri">iii.</span></p>
+                    </td>
+                    <td style="width: 39.3228%;">
+                        <p><span class="calibri">Adherence to a minimum scale of fees standards recommended by ICAI</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p><span class="calibri">For up to 50% of the engagements- 2 Points</span></p>
+                        <p><span class="calibri">For More than 50% of the engagements - 4 Points</span></p>
+                        <p><span class="calibri">For None - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><span class="calibri">4</span></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <select name="revenue_pricing_iii" required>
+                            <option value="">Select</option>
+                            <option value="50">For up to 50% of the engagements - 2 Points</option>
+                            <option value="more_than_50">For More than 50% of the engagements - 4 Points</option>
+                            <option value="none">For None - 0 Point</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;"></td>
+                    <td style="width: 39.3228%;">
+                        <p><strong class="calibri">Total</strong></p>
+                    </td>
+                    <td style="width: 20.5234%;"></td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><strong class="calibri">16</strong></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <input type="text" name="revenue_pricing_total" readonly>
+                    </td>
+                </tr>
+
+                <!-- Section 1 Total -->
+                <tr>
+                    <td colspan="3" style="width: 72.98%;">
+                        <p style="text-align:center;"><strong class="calibri">Total of Section 1</strong></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p><strong class="calibri">280</strong></p>
+                    </td>
+                    <td style="width: 13.734%;">
+                        <input type="text" name="section1_total" readonly>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+            
             
 
-           
-                
-              
-        
-        
 
 
-        <button type="submit" class="submit-btn">Generate PDF</button>
+
+
+
+
+<button type="submit" class="submit-btn">Generate PDF</button>
       </form>
+
     </div>
 
     <script>

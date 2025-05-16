@@ -5,7 +5,7 @@ const fs = require("fs");
 const path = require("path");
 
 const app = express();
-const PORT = 4000;
+const PORT = 3000;
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -226,7 +226,216 @@ function generateCompletePdfHtml(data) {
     qcResponses[key] = data[key] || "";
   }
 
+  // Page No 35
+  function getBudgetAnalysisText(value) {
+    const points = parseInt(value) || 0;
+    switch (points) {
+      case 0:
+        return "Up to 10% (0 Points)";
+      case 4:
+        return "More than 10% and up to 30% (4 Points)";
+      case 8:
+        return "More than 30% and up to 50% (8 Points)";
+      case 12:
+        return "More than 50% and up to 70% (12 Points)";
+      case 16:
+        return "More than 70% and up to 90% (16 Points)";
+      case 20:
+        return "More than 90% (20 Points)";
+      default:
+        return "";
+    }
+  }
+
+  // Page no 36
+
+  const qualityReviewScore = data.quality_review === "yes" ? 8 : 0;
+  const satisfactoryScore = parseInt(data.satisfactory_engagements || 0);
+  const withoutFindingsScore = parseInt(data.engagements_without_findings || 0);
+  const totalScore =
+    qualityReviewScore + satisfactoryScore + withoutFindingsScore;
+
+  // page no 37
+
+  const getSelectValue = (name) => {
+    const value = data[name];
+    if (name === "question_i") {
+      return value === "4" ? "Yes" : "No";
+    } else if (name === "question_ii") {
+      switch (value) {
+        case "0":
+          return "Less than 5% - 0 Point";
+        case "-1":
+          return "More than 5% to 15% (-1) Point";
+        case "-3":
+          return "More than 15% to 30% to 50% (-3) Points";
+        case "-4":
+          return "More than 50% (-4) Points";
+        default:
+          return "";
+      }
+    } else if (name === "question_iii") {
+      switch (value) {
+        case "0":
+          return "Less than 5% - 0 Point";
+        case "-1":
+          return "More than 5% to 15% (-1) Point";
+        case "-2":
+          return "More than 15% to 30% (-2) Points";
+        case "-3":
+          return "More than 30% to 50% (-3) Points";
+        case "-4":
+          return "More than 50% (-4) Points";
+        default:
+          return "";
+      }
+    } else if (name === "question_iv") {
+      return value === "0" ? "Yes - 12 Points" : "No - 0 Point";
+    }
+    return "";
+  };
+
+  // Calculate total score
+  const total =
+    (data.question_i === "4" ? 12 : 0) +
+    (parseInt(data.question_ii) || 0) +
+    (parseInt(data.question_iii) || 0) +
+    (data.question_iv === "0" ? 12 : 0);
+
+  // Page No 38
+  // Calculate scores for each question
+  const scoreI = data.question_i === "4" ? 12 : -1;
+  const scoreII = parseInt(data.question_ii) || 0;
+  const scoreIII = parseInt(data.question_iii) || 0;
+  const scoreIV = data.question_iv === "0" ? 12 : 0;
+  const totals = scoreI + scoreII + scoreIII + scoreIV;
+
+  // Page 37 to 41
+
+  function generateTechAdoptionRows(data) {
+    const techItems = [
+      { id: "i_1", text: "Internal communication - chats" },
+      {
+        id: "i_2",
+        text: "Has the firm automated its office with automated Attendance System and Leave management?",
+      },
+      {
+        id: "i_3",
+        text: "Project or activity management/ Timesheet management",
+      },
+      { id: "i_4", text: "Digital storage of records (scan, etc.)" },
+      { id: "i_5", text: "Centralised server/ Cloud" },
+      { id: "i_6", text: "Digital Library (Own or ICAI)" },
+      {
+        id: "i_7",
+        text: "Client interaction (Alerts, updates, availability of information in website, etc.)",
+      },
+      { id: "i_8", text: "Video conferencing facilities adopted" },
+      {
+        id: "i_9",
+        text: "Does the firm use only licensed operating system, software etc.?",
+      },
+      { id: "i_10", text: "Own E-mail domains, E-mail usage policies, etc." },
+      { id: "i_11", text: "Use of anti-virus and malware protection tools" },
+      { id: "i_12", text: "Data security, etc." },
+      { id: "i_13", text: "Cyber security measures" },
+    ];
+
+    return techItems
+      .map(
+        (item) => `
+    <tr>
+      <td style="width: 9.0769%;"></td>
+      <td style="width: 39.3228%;">
+        <p class="bullet-item"><span class="calibri">• ${item.text}</span></p>
+      </td>
+      <td style="width: 20.5234%;">
+        <p style="margin-top:2.0pt;text-align:justify;"><span class="calibri">For Yes - 4 Points</span></p>
+        <p style="margin-top:2.0pt;text-align:justify;"><span class="calibri">For No - 0 Point</span></p>
+      </td>
+      <td style="width: 19.4968%;" class="text-center">
+        <p style="margin-top:2.0pt;"><span class="calibri">4</span></p>
+      </td>
+      <td style="width: 13.734%;" class="text-center">
+        <p style="margin-top:2.0pt;"><strong>${
+          data[`tech_adoption_${item.id}`] === "yes" ? "Yes" : "No"
+        } (Score: ${
+          data[`tech_adoption_${item.id}`] === "yes" ? 4 : 0
+        })</strong></p>
+      </td>
+    </tr>
+  `
+      )
+      .join("");
+  }
+
+  // Calculate scores
+  const calculateScore = (section, values) => {
+    let score = 0;
+
+    if (section === "client_sensitization") {
+      if (values.i === "yes") score += 8;
+      if (values.ii === "yes") score += 8;
+    } else if (section === "tech_adoption") {
+      // Office technology
+      if (values.i_1 === "yes") score += 4;
+
+      if (values.i_2 === "yes") score += 4;
+      if (values.i_3 === "yes") score += 4;
+      if (values.i_4 === "yes") score += 4;
+      if (values.i_5 === "yes") score += 4;
+      if (values.i_6 === "yes") score += 4;
+      if (values.i_7 === "yes") score += 4;
+      if (values.i_8 === "yes") score += 4;
+      if (values.i_9 === "yes") score += 4;
+      if (values.i_10 === "yes") score += 4;
+
+      // Service delivery technology
+      if (values.ii === "yes") score += 12;
+    } else if (section === "revenue_pricing") {
+      if (values.i === "yes") score += 4;
+      if (values.ii === "yes") score += 8;
+      if (values.iii === "50") score += 2;
+      if (values.iii === "more_than_50") score += 4;
+    }
+
+    return score;
+  };
+
+  // Calculate section totals
+  const clientSensitizationScore = calculateScore("client_sensitization", {
+    i: data.client_sensitization_i,
+    ii: data.client_sensitization_ii,
+  });
+
+  const techAdoptionScore = calculateScore("tech_adoption", {
+    i_1: data.tech_adoption_i_1,
+    i_2: data.tech_adoption_i_2,
+    i_3: data.tech_adoption_i_3,
+    i_4: data.tech_adoption_i_4,
+    i_5: data.tech_adoption_i_5,
+    i_6: data.tech_adoption_i_6,
+    i_7: data.tech_adoption_i_7,
+    i_8: data.tech_adoption_i_8,
+    i_9: data.tech_adoption_i_9,
+    i_10: data.tech_adoption_i_10,
+    ii: data.tech_adoption_ii,
+  });
+
+  const revenuePricingScore = calculateScore("revenue_pricing", {
+    i: data.revenue_pricing_i,
+    ii: data.revenue_pricing_ii,
+    iii: data.revenue_pricing_iii,
+  });
+
+  const section1Total =
+    clientSensitizationScore + techAdoptionScore + revenuePricingScore;
+
   return `
+
+      
+
+
     <!DOCTYPE html>
     <html>
     <head>
@@ -2519,11 +2728,7 @@ function generateCompletePdfHtml(data) {
 
         <!-- Page No 35 -->
 
-        <div class="header">
-            <h1>Audit Quality Management System (AQMMv1.0)</h1>
-            <p><strong>Service Delivery - Effort Monitoring</strong></p>
-        </div>
-
+        <div class="header page-break">
         <!-- Section 1.4: Service Delivery - Effort Monitoring -->
         <div class="section-title">1.4 Service Delivery - Effort Monitoring</div>
         
@@ -2598,6 +2803,463 @@ function generateCompletePdfHtml(data) {
             </tbody>
         </table>
 
+        <!-- Page No 36 -->
+
+        <h1 class="page-break">Quality Control Assessment Report</h1>
+
+      <div class="section-title">1.5 Quality Control for Engagements</div>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 8%;">S.No.</th>
+            <th style="width: 44%;">Competency Basis</th>
+            <th style="width: 24%;">Score Basis</th>
+            <th style="width: 11%;">Max Scores</th>
+            <th style="width: 13%;">Scores Obtained</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>i.</td>
+            <td>Does the firm have a Quality Review of all Listed audit engagements as per para 60 of SQC1? Is there a document of time spent for review of all engagements?</td>
+            <td>
+              <p>For Yes – 8 Points</p>
+              <p>For No – 0 Point</p>
+            </td>
+            <td class="text-center">8</td>
+            <td>
+              <span class="checkbox">${
+                data.quality_review === "yes" ? "✓ (8)" : "✗ (0)"
+              }</span>
+            </td>
+          </tr>
+          <tr>
+            <td>ii.</td>
+            <td>Total engagements having concluded to be satisfactory as per quality review vs No of engagements quality reviewed</td>
+            <td>
+              <p>Up to 10% – 0 Point</p>
+              <p>More than 10% and up to 30% – 4 Points</p>
+              <p>More than 30% and up to 50% – 8 Points</p>
+              <p>More than 50% and up to 70% – 12 Points</p>
+              <p>More than 70% and up to 90% – 16 Points</p>
+              <p>More than 90% – 20 Points</p>
+            </td>
+            <td class="text-center">20</td>
+            <td>${data.satisfactory_engagements || "0"} Points</td>
+          </tr>
+          <tr>
+            <td>iii.</td>
+            <td>No. of engagements without findings by ICAI, Committees of ICAI and regulators that require significant improvements</td>
+            <td>
+              <p>10% to 30% – 4 Points</p>
+              <p>More than 30% and up to 50% – 8 Points</p>
+              <p>More than 50% and up to 70% – 12 Points</p>
+              <p>More than 70% and up to 90% – 16 Points</p>
+              <p>More than 90% – 20 Points</p>
+            </td>
+            <td class="text-center">20</td>
+            <td>${data.engagements_without_findings || "0"} Points</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><strong>Total</strong></td>
+            <td></td>
+            <td class="text-center">36</td>
+            <td><strong>${totalScore} Points</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Page No 37 -->
+
+      <table class="page-break">
+            <thead>
+                <tr>
+                    <th style="width: 8%;">S.No.</th>
+                    <th style="width: 44%;">Competency Basis</th>
+                    <th style="width: 24%;">Score Basis</th>
+                    <th style="width: 11%;">Max Scores</th>
+                    <th style="width: 13%;">Scores Obtained</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>iv.</td>
+                    <td>Documentation of the firm in accordance with SQC 1</td>
+                    <td>
+                        <p>For the presence of documentation in the critical areas of Ethical require-ments, Acceptance and continuance of client relation-ships and specific engagements, and Engage-ment performance – 6 Points</p>
+                        <p>For the presence of documentation in the areas of Leadership responsibilities for quality within the firm, Human resources, and Monitoring – 6 Points</p>
+                    </td>
+                    <td class="text-center">12</td>
+                    <td>${getRadioValue("capacity_planning")}</td>
+                </tr>
+                <tr>
+                    <td>v.</td>
+                    <td>Does the firm have Accounting and Auditing Resources in the form of soft copies of archives Q&As, firm thought leadership, a dedicated/ Shared Technical desk?</td>
+                    <td>
+                        <p>For Yes – 8 Points</p>
+                        <p>For No – 0 Point</p>
+                    </td>
+                    <td class="text-center">8</td>
+                    <td>${getRadioValue("budgeting_process")}</td>
+                </tr>
+                <tr>
+                    <td>vi.</td>
+                    <td>Is appropriate time spent on understanding the business, risk assessment and planning an engagement?Have risks been mitigated through performance of audit procedures?</td>
+                    <td>
+                        <p>For Yes – 12 Points</p>
+                        <p>For No – 0 Point</p>
+                    </td>
+                    <td class="text-center">12</td>
+                    <td>${getSelectValue("budget_analysis")}</td>
+                </tr>
+                <tr class="total-row">
+                    <td></td>
+                    <td><strong>Total</strong></td>
+                    <td></td>
+                    <td class="text-center">36</td>
+                    <td>${total}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Page No 38 -->
+
+         <table class="page-break">
+            <thead>
+                <tr>
+                    <th style="width: 8%;">S.No.</th>
+                    <th style="width: 44%;">Competency Basis</th>
+                    <th style="width: 24%;">Score Basis</th>
+                    <th style="width: 11%;">Max Scores</th>
+                    <th style="width: 13%;">Scores Obtained</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>i.</td>
+                    <td>Does the firm follow/implement Standard delivery methodology – the adoption of audit manuals, adherence to practice standards and tools?</td>
+                    <td class="score-basis">
+                        <p>For No - 0 Points</p>
+                    </td>
+                    <td class="text-center">12</td>
+                    <td>${getRadioValue("question_i")} (Score: ${scoreI})</td>
+                </tr>
+                <tr>
+                    <td>ii.</td>
+                    <td>The number of statutory audit engagements re-worked (filing errors, information insufficiency, wrong interpretation of provisions, etc.)</td>
+                    <td class="score-basis">
+                        <p>Less than 5% - 0 Point</p>
+                        <p>More than 5% to 15% (-1) Point</p>
+                        <p>More than 15% to 30% to 50% (-3) Points</p>
+                        <p>More than 50% (-4) Points</p>
+                    </td>
+                    <td class="text-center">0</td>
+                    <td>${getSelectValue(
+                      "question_ii"
+                    )} (Score: ${scoreII})</td>
+                </tr>
+                <tr>
+                    <td>iii.</td>
+                    <td>Number of client disputes (other than fees disputes) and how they are addressed.</td>
+                    <td class="score-basis">
+                        <p>Less than 5% – 0 Point</p>
+                        <p>More than 5% to 15%: (-1) Point</p>
+                        <p>More than 15% to 30%: (-2) Points</p>
+                        <p>More than 30% to 50%: (-3) Points</p>
+                        <p>More than 50%: (-4) Points</p>
+                    </td>
+                    <td class="text-center">12</td>
+                    <td>${getSelectValue(
+                      "question_iii"
+                    )} (Score: ${scoreIII})</td>
+                </tr>
+                <tr>
+                    <td>iv.</td>
+                    <td>Is the timing of audit interactions with management planned in such a way that integrates with the auditor's requirements so that audit timelines can be met?</td>
+                    <td class="score-basis">
+                        <p>For Yes – 12 Points</p>
+                        <p>For No – 0 Point</p>
+                    </td>
+                    <td class="text-center">12</td>
+                    <td>${getSelectValue(
+                      "question_iv"
+                    )} (Score: ${scoreIV})</td>
+                </tr>
+                <tr class="total-row">
+                    <td></td>
+                    <td><strong>Total</strong></td>
+                    <td></td>
+                    <td class="text-center">36</td>
+                    <td><strong>${totals}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <!-- Page No 39 to 41-->
+
+      <table class="page-break">
+            <thead>
+                <tr>
+                    <th style="width: 9.0769%;">S.No.</th>
+                    <th style="width: 39.3228%;">Competency Basis</th>
+                    <th style="width: 20.5234%;">Score Basis</th>
+                    <th style="width: 19.4968%;">Max Scores</th>
+                    <th style="width: 13.734%;">Scores<br>obtained</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Client Sensitization Section -->
+                <tr>
+                    <td style="width: 9.0769%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><strong class="century-schoolbook">1.7</strong></p>
+                    </td>
+                    <td colspan="4" style="width: 90.7693%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><strong class="century-schoolbook">Client Sensitisation</strong></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><span class="century-schoolbook">i.</span></p>
+                    </td>
+                    <td style="width: 39.3228%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><span class="century-schoolbook">Awareness meetings and Knowledge dissemination meetings/articles/document sharing with clients including:</span></p>
+                        <p style="margin-top:2.0pt;text-align:justify;margin-left:18.3pt;text-indent:-18.3pt;"><span class="century-schoolbook">1) Updating client on audit issues, formally- effectiveness of the process of communication with management and those charged with Governance;</span></p>
+                        <p style="margin-top:2.0pt;text-align:justify;margin-left:18.3pt;text-indent:-18.3pt;"><span class="century-schoolbook">2) Updating client on changes in accounting, legal, audit aspects, etc. with client specific impact; and</span></p>
+                        <p style="margin-top:2.0pt;text-align:justify;"><span class="century-schoolbook">3) Follow through on previous audit observations and updates to management and those charged with Governance.</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><span class="century-schoolbook">For Yes - 8 Points</span></p>
+                        <p style="margin-top:3.0pt;text-align:justify;"><span class="century-schoolbook">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p style="margin-top:2.0pt;"><span class="century-schoolbook">8</span></p>
+                    </td>
+                    <td style="width: 13.734%;" class="text-center">
+                        <p style="margin-top:2.0pt;"><strong>${getSelectValue(
+                          "client_sensitization_i"
+                        )} (Score: ${
+    data.client_sensitization_i === "yes" ? 8 : 0
+  })</strong></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><span class="century-schoolbook">ii.</span></p>
+                    </td>
+                    <td style="width: 39.3228%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><span class="century-schoolbook">Monitoring planned hours vs actual hours across engagement; the focus is on the existence of a monitoring mechanism</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><span class="century-schoolbook">For Yes - 8 Points</span></p>
+                        <p style="margin-top:2.0pt;text-align:justify;"><span class="century-schoolbook">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p style="margin-top:2.0pt;"><span class="century-schoolbook">8</span></p>
+                    </td>
+                    <td style="width: 13.734%;" class="text-center">
+                        <p style="margin-top:2.0pt;"><strong>${getSelectValue(
+                          "client_sensitization_ii"
+                        )} (Score: ${
+    data.client_sensitization_ii === "yes" ? 8 : 0
+  })</strong></p>
+                    </td>
+                </tr>
+                <tr class="total-row">
+                    <td style="width: 9.0769%;"></td>
+                    <td style="width: 39.3228%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><strong class="century-schoolbook">Total</strong></p>
+                    </td>
+                    <td style="width: 20.5234%;"></td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p style="margin-top:2.0pt;"><strong class="century-schoolbook">16</strong></p>
+                    </td>
+                    <td style="width: 13.734%;" class="text-center">
+                        <p style="margin-top:2.0pt;"><strong>${clientSensitizationScore}</strong></p>
+                    </td>
+                </tr>
+
+                <!-- Technology Adoption Section -->
+                <tr>
+                    <td style="width: 9.0769%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><strong class="century-schoolbook">1.8</strong></p>
+                    </td>
+                    <td colspan="4" style="width: 90.7693%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><strong class="century-schoolbook">Technology Adoption</strong></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><span class="calibri">(i)</span></p>
+                    </td>
+                    <td style="width: 39.3228%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><span class="century-schoolbook">Technology adoption at</span></p>
+                    </td>
+                    <td style="width: 20.5234%;"></td>
+                    <td style="width: 19.4968%;" class="text-center"></td>
+                    <td style="width: 13.734%;" class="text-center"></td>
+                </tr>
+                
+                <tr>
+                    <td style="width: 9.0769%;"></td>
+                    <td style="width: 39.3228%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><span class="century-schoolbook">Office -</span></p>
+                    </td>
+                    <td style="width: 20.5234%;"></td>
+                    <td style="width: 19.4968%;" class="text-center"></td>
+                    <td style="width: 13.734%;" class="text-center"></td>
+                </tr>
+                
+                <!-- Office Technology Items -->
+                ${generateTechAdoptionRows(data)}
+                
+                <tr>
+                    <td style="width: 9.0769%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><span class="calibri">ii.</span></p>
+                    </td>
+                    <td style="width: 39.3228%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><span class="calibri">Awareness and Adoption of Technology for Service delivery - Say, use of Audit tools, usage of analytical tools, use of data visualisation tools or adoption of an audit tool. Note: DCMM version 2 may be referred to arrive at the technical maturity of the firm/CA.</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><span class="calibri">For Yes - 12 Points</span></p>
+                        <p style="margin-top:2.0pt;text-align:justify;"><span class="calibri">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p style="margin-top:2.0pt;"><span class="calibri">12</span></p>
+                    </td>
+                    <td style="width: 13.734%;" class="text-center">
+                        <p style="margin-top:2.0pt;"><strong>${getSelectValue(
+                          "tech_adoption_ii"
+                        )} (Score: ${
+    data.tech_adoption_ii === "yes" ? 12 : 0
+  })</strong></p>
+                    </td>
+                    
+                </tr>
+                <tr class="total-row">
+                    <td style="width: 9.0769%;"></td>
+                    <td style="width: 39.3228%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><strong class="calibri">Total</strong></p>
+                    </td>
+                    <td style="width: 20.5234%;"></td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p style="margin-top:2.0pt;"><strong class="calibri">64</strong></p>
+                    </td>
+                    <td style="width: 13.734%;" class="text-center">
+                        <p style="margin-top:2.0pt;"><strong>${techAdoptionScore}</strong></p>
+                    </td>
+                </tr>
+
+                <!-- Revenue, Budgeting & Pricing Section -->
+                <tr>
+                    <td style="width: 9.0769%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><strong class="century-schoolbook">1.9</strong></p>
+                    </td>
+                    <td colspan="4" style="width: 90.7693%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><strong class="century-schoolbook">Revenue, Budgeting & Pricing</strong></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;">
+                        <p style="margin-top:0cm;text-align:justify;"><span class="calibri">i.</span></p>
+                    </td>
+                    <td style="width: 39.3228%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><span class="calibri">Whether the client wise revenue is in compliance with the Code of Ethics (currently fees from one client should not exceed 40% of total revenue unless safeguards are put in place) and once the deferred clauses of Part A are implemented this will be reduced to 15%.</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p style="margin-top:3.0pt;text-align:justify;"><span class="calibri">For Yes -4 Points</span></p>
+                        <p style="margin-top:2.0pt;text-align:justify;"><span class="calibri">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p style="margin-top:2.0pt;"><span class="calibri">4</span></p>
+                    </td>
+                    <td style="width: 13.734%;" class="text-center">
+                        <p style="margin-top:2.0pt;"><strong>${getSelectValue(
+                          "revenue_pricing_i"
+                        )} (Score: ${
+    data.revenue_pricing_i === "yes" ? 4 : 0
+  })</strong></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;">
+                        <p style="margin-top:0cm;text-align:justify;"><span class="calibri">ii.</span></p>
+                    </td>
+                    <td style="width: 39.3228%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><span class="calibri">Fee considerations and scope of services should not infringe upon the quality of work and documentation as envisaged in SQC 1 under Leadership is responsible for quality within the firm.</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p style="margin-top:3.0pt;text-align:justify;"><span class="calibri">Yes - 8 Points</span></p>
+                        <p style="margin-top:2.0pt;text-align:justify;"><span class="calibri">For No - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p style="margin-top:2.0pt;"><span class="calibri">8</span></p>
+                    </td>
+                    <td style="width: 13.734%;" class="text-center">
+                        <p style="margin-top:2.0pt;"><strong>${getSelectValue(
+                          "revenue_pricing_ii"
+                        )} (Score: ${
+    data.revenue_pricing_ii === "yes" ? 8 : 0
+  })</strong></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 9.0769%;">
+                        <p style="margin-top:3.0pt;text-align:justify;"><span class="calibri">iii.</span></p>
+                    </td>
+                    <td style="width: 39.3228%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><span class="calibri">Adherence to a minimum scale of fees standards recommended by ICAI</span></p>
+                    </td>
+                    <td style="width: 20.5234%;">
+                        <p style="margin-top:4.0pt;text-align:justify;"><span class="calibri">For up to 50% of the engagements- 2 Points</span></p>
+                        <p style="margin-top:4.0pt;text-align:justify;"><span class="calibri">For More than 50% of the engagements - 4 Points</span></p>
+                        <p style="margin-top:3.0pt;text-align:justify;"><span class="calibri">For None - 0 Point</span></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p style="margin-top:2.0pt;"><span class="calibri">4</span></p>
+                    </td>
+                    <td style="width: 13.734%;" class="text-center">
+                        <p style="margin-top:2.0pt;"><strong>${getSelectValue(
+                          "revenue_pricing_iii"
+                        )} (Score: ${
+    data.revenue_pricing_iii === "50"
+      ? 2
+      : data.revenue_pricing_iii === "more_than_50"
+      ? 4
+      : 0
+  })</strong></p>
+                    </td>
+                </tr>
+                <tr class="total-row">
+                    <td style="width: 9.0769%;"></td>
+                    <td style="width: 39.3228%;">
+                        <p style="margin-top:2.0pt;text-align:justify;"><strong class="calibri">Total</strong></p>
+                    </td>
+                    <td style="width: 20.5234%;"></td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p style="margin-top:2.0pt;"><strong class="calibri">16</strong></p>
+                    </td>
+                    <td style="width: 13.734%;" class="text-center">
+                        <p style="margin-top:2.0pt;"><strong>${revenuePricingScore}</strong></p>
+                    </td>
+                </tr>
+
+                <!-- Section 1 Total -->
+                <tr class="total-row">
+                    <td colspan="3" style="width: 72.98%;">
+                        <p style="margin-top:2.0pt;text-align:center;"><strong class="calibri">Total of Section 1</strong></p>
+                    </td>
+                    <td style="width: 19.4968%;" class="text-center">
+                        <p style="margin-top:2.0pt;"><strong class="calibri">280</strong></p>
+                    </td>
+                    <td style="width: 13.734%;" class="text-center">
+                        <p style="margin-top:2.0pt;"><strong>${section1Total}</strong></p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
 
         </div>
